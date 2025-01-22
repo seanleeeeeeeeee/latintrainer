@@ -53,7 +53,7 @@
             }
 
             totalQuestions = parseInt(document.getElementById("num-questions").value);
-            if (isNaN(totalQuestions) || totalQuestions <= 0) {
+            if (isNaN(totalQuestions) || totalQuestions < 0) {
                 alert("Please enter a valid number of questions.");
                 return;
             }
@@ -111,7 +111,7 @@
         }
 
         function nextQuestion(enabledGroups) {
-            if (questionCount >= totalQuestions) {
+            if (totalQuestions != 0 && questionCount >= totalQuestions) {
                 alert("Quiz complete! Great job!");
                 return;
             }
