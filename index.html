@@ -86,7 +86,7 @@
                 const numbers = ["singular", "plural"];
                 const selectedCase = cases[Math.floor(Math.random() * cases.length)];
                 const selectedNumber = numbers[Math.floor(Math.random() * numbers.length)];
-                prompt = `'${word}' (n.) - ${selectedCase}`;
+                prompt = `'${word}' (n.) - ${selectedCase} ${selectedNumber}`;
                 correctAnswer = "(placeholder for noun answer)"; // Replace with actual logic
             } else if (group.startsWith("verb")) {
                 const conjugation = group.split("-")[1];
@@ -104,7 +104,7 @@
                 const numbers = ["singular", "plural"];
                 const selectedCase = cases[Math.floor(Math.random() * cases.length)];
                 const selectedNumber = numbers[Math.floor(Math.random() * numbers.length)];
-                prompt = `Decline '${word}' in the ${selectedCase} case.`;
+                prompt = `'${word}' (adj.) - ${selectedCase} ${selectedNumber}`;
                 correctAnswer = "(placeholder for adjective answer)"; // Replace with actual logic
             }
 
@@ -130,13 +130,13 @@
                 alert("Please start the quiz first.");
                 return;
             }
-
+/*
             if (userAnswer === currentQuestion.correctAnswer) {
                 alert("Correct!");
             } else {
                 alert(`Incorrect. The correct answer was: ${currentQuestion.correctAnswer}`);
             }
-
+*/
             nextQuestion(getEnabledGroups());
         }
     </script>
