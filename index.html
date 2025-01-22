@@ -42,6 +42,10 @@
             third: ["celer", "gravis", "felix", "tristis", "facilis"]
         };
 
+        let currentQuestion = null;
+        let questionCount = 0;
+        let totalQuestions = 0;
+
         function startQuiz() {
             const enabledGroups = getEnabledGroups();
             if (enabledGroups.length === 0) {
@@ -49,15 +53,14 @@
                 return;
             }
 
-            const numQuestions = parseInt(document.getElementById("num-questions").value);
-            if (isNaN(numQuestions) || numQuestions <= 0) {
+            totalQuestions = parseInt(document.getElementById("num-questions").value);
+            if (isNaN(totalQuestions) || totalQuestions <= 0) {
                 alert("Please enter a valid number of questions.");
                 return;
             }
 
-            let question = generateQuestion(enabledGroups);
-            document.getElementById("question-field").textContent = question.prompt;
-            document.getElementById("answer-field").value = "";
+            questionCount = 0;
+            nextQuestion(enabledGroups);
         }
 
         function getEnabledGroups() {
@@ -74,26 +77,61 @@
 
         function generateQuestion(enabledGroups) {
             const group = enabledGroups[Math.floor(Math.random() * enabledGroups.length)];
-            let word, prompt;
+            let word, prompt, correctAnswer;
 
             if (group.startsWith("noun")) {
                 const declension = group.split("-")[1];
                 word = nouns[declension][Math.floor(Math.random() * nouns[declension].length)];
                 const cases = ["nominative", "genitive", "dative", "accusative", "ablative"];
-                prompt = `Decline '${word}' in the ${cases[Math.floor(Math.random() * cases.length)]} case.`;
+                const selectedCase = cases[Math.floor(Math.random() * cases.length)];
+                prompt = `Decline '${word}' in the ${selectedCase} case.`;
+                correctAnswer = "(placeholder for noun answer)"; // Replace with actual logic
             } else if (group.startsWith("verb")) {
                 const conjugation = group.split("-")[1];
                 word = verbs[conjugation][Math.floor(Math.random() * verbs[conjugation].length)];
                 const tenses = ["present", "imperfect", "future", "perfect", "pluperfect", "future perfect"];
-                prompt = `Conjugate '${word}' in the ${tenses[Math.floor(Math.random() * tenses.length)]} tense.`;
+                const selectedTense = tenses[Math.floor(Math.random() * tenses.length)];
+                prompt = `Conjugate '${word}' in the ${selectedTense} tense.`;
+                correctAnswer = "(placeholder for verb answer)"; // Replace with actual logic
             } else if (group.startsWith("adjective")) {
                 const declension = group.split("-")[1];
                 word = adjectives[declension][Math.floor(Math.random() * adjectives[declension].length)];
                 const cases = ["nominative", "genitive", "dative", "accusative", "ablative"];
-                prompt = `Decline '${word}' in the ${cases[Math.floor(Math.random() * cases.length)]} case.`;
+                const selectedCase = cases[Math.floor(Math.random() * cases.length)];
+                prompt = `Decline '${word}' in the ${selectedCase} case.`;
+                correctAnswer = "(placeholder for adjective answer)"; // Replace with actual logic
             }
 
-            return { word, prompt };
+            return { word, prompt, correctAnswer };
+        }
+
+        function nextQuestion(enabledGroups) {
+            if (questionCount >= totalQuestions) {
+                alert("Quiz complete! Great job!");
+                return;
+            }
+
+            currentQuestion = generateQuestion(enabledGroups);
+            document.getElementById("question-field").textContent = currentQuestion.prompt;
+            document.getElementById("answer-field").value = "";
+            questionCount++;
+        }
+
+        function verifyAnswer() {
+            const userAnswer = document.getElementById("answer-field").value.trim();
+
+            if (!currentQuestion) {
+                alert("Please start the quiz first.");
+                return;
+            }
+
+            if (userAnswer === currentQuestion.correctAnswer) {
+                alert("Correct!");
+            } else {
+                alert(`Incorrect. The correct answer was: ${currentQuestion.correctAnswer}`);
+            }
+
+            nextQuestion(getEnabledGroups());
         }
     </script>
 </head>
@@ -132,6 +170,7 @@
         <h2>Question</h2>
         <div id="question-field">Press "Start Quiz" to generate a question.</div>
         <input type="text" id="answer-field" placeholder="Enter your answer here">
+        <button onclick="verifyAnswer()">Submit Answer</button>
     </div>
 </body>
 </html>
