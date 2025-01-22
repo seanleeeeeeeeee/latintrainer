@@ -83,7 +83,9 @@
                 const declension = group.split("-")[1];
                 word = nouns[declension][Math.floor(Math.random() * nouns[declension].length)];
                 const cases = ["nominative", "genitive", "dative", "accusative", "ablative"];
+                const numbers = ["singular", "plural"];
                 const selectedCase = cases[Math.floor(Math.random() * cases.length)];
+                const selectedNumber = numbers[Math.floor(Math.random() * numbers.length)];
                 prompt = `'${word}' (n.) - ${selectedCase}`;
                 correctAnswer = "(placeholder for noun answer)"; // Replace with actual logic
             } else if (group.startsWith("verb")) {
@@ -99,7 +101,9 @@
                 const declension = group.split("-")[1];
                 word = adjectives[declension][Math.floor(Math.random() * adjectives[declension].length)];
                 const cases = ["nominative", "genitive", "dative", "accusative", "ablative"];
+                const numbers = ["singular", "plural"];
                 const selectedCase = cases[Math.floor(Math.random() * cases.length)];
+                const selectedNumber = numbers[Math.floor(Math.random() * numbers.length)];
                 prompt = `Decline '${word}' in the ${selectedCase} case.`;
                 correctAnswer = "(placeholder for adjective answer)"; // Replace with actual logic
             }
