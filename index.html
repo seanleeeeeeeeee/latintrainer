@@ -22,7 +22,7 @@
     <script>
         const nouns = {
             first: ["puella", "mensa", "silva", "terra", "aqua"],
-            second: ["servus", "dominus", "bellum", "ager", "amicus"],
+            second: ["servus", "dominus", "bellum", "vir", "puer"],
             third: ["rex", "homo", "virtus", "corpus", "civis"],
             fourth: ["manus", "senatus", "cornu", "exercitus", "fructus"],
             fifth: ["dies", "res", "fides", "spes", "acies"]
@@ -84,14 +84,16 @@
                 word = nouns[declension][Math.floor(Math.random() * nouns[declension].length)];
                 const cases = ["nominative", "genitive", "dative", "accusative", "ablative"];
                 const selectedCase = cases[Math.floor(Math.random() * cases.length)];
-                prompt = `Decline '${word}' in the ${selectedCase} case.`;
+                prompt = `'${word}' (n.) - ${selectedCase}`;
                 correctAnswer = "(placeholder for noun answer)"; // Replace with actual logic
             } else if (group.startsWith("verb")) {
                 const conjugation = group.split("-")[1];
                 word = verbs[conjugation][Math.floor(Math.random() * verbs[conjugation].length)];
                 const tenses = ["present", "imperfect", "future", "perfect", "pluperfect", "future perfect"];
+                const agent = ["ego", "tū", "is", "nōs", "vōs", "iī"];
                 const selectedTense = tenses[Math.floor(Math.random() * tenses.length)];
-                prompt = `Conjugate '${word}' in the ${selectedTense} tense.`;
+                const selectedAgent = agent[Math.floor(Math.random() * agent.length)];
+                prompt = `'${word}' (v.) -  ${selectedAgent}, ${selectedTense}`;
                 correctAnswer = "(placeholder for verb answer)"; // Replace with actual logic
             } else if (group.startsWith("adjective")) {
                 const declension = group.split("-")[1];
