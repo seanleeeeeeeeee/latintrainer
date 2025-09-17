@@ -1,86 +1,180 @@
 <!DOCTYPE html>
-<label><input type="checkbox" value="perfect"> Perfect</label>
-<label><input type="checkbox" value="pluperfect"> Pluperfect</label>
-<label><input type="checkbox" value="future-perfect"> Future Perfect</label>
-</div>
-</div>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latin Conjugation Trainer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            text-align: center;
+        }
 
+        .section {
+            margin: 20px 0;
+        }
+        .checkbox-group {
+            margin-left: 20px;
+        }
+    </style>
+    <script>
+        const nouns = {
+            first: ["puella", "mensa", "silva", "terra", "aqua"],
+            second: ["servus", "dominus", "bellum", "vir", "puer"],
+            third: ["rex", "homo", "virtus", "corpus", "civis"],
+            fourth: ["manus", "senatus", "cornu", "exercitus", "fructus"],
+            fifth: ["dies", "res", "fides", "spes", "acies"]
+        };
 
-<div class="section">
-<h2>Quiz Settings</h2>
-<label for="num-questions">Number of Questions: </label>
-<input type="number" id="num-questions" min="1" max="50" value="5">
-<br><br>
-<button id="start-btn">Start Quiz</button>
-</div>
+        const verbs = {
+            first: ["amo", "laudo", "voco", "paro", "porto"],
+            second: ["moneo", "video", "habeo", "timeo", "teneo"],
+            third: ["mitto", "duco", "scribo", "lego", "gero"],
+            fourth: ["audio", "venio", "dormio", "aperio", "munio"],
+            irregular: ["sum", "possum", "eo", "fero", "volo"]
+        };
 
+        const adjectives = {
+            first: ["bonus", "magnus", "altus", "malus", "parvus"],
+            second: ["clarus", "novus", "longus", "fortis", "brevis"],
+            third: ["celer", "gravis", "felix", "tristis", "facilis"]
+        };
 
-<div class="section" id="quiz-section" style="display:none;">
-<h2>Quiz</h2>
-<div id="question"></div>
-<input type="text" id="answer" placeholder="Type your answer">
-<br><br>
-<button id="submit-btn">Submit</button>
-<div id="feedback"></div>
-</div>
+        let currentQuestion = null;
+        let questionCount = 0;
+        let totalQuestions = 0;
 
+        function startQuiz() {
+            const enabledGroups = getEnabledGroups();
+            if (enabledGroups.length === 0) {
+                alert("Please enable at least one group.");
+                return;
+            }
 
-<script>
-// Placeholder data for nouns, verbs, adjectives
-const nouns = { first: ["puella", "nauta", "terra"], second: ["amicus", "servus", "dominus"] };
-const verbs = { first: ["amo", "laudo", "porto"], second: ["moneo", "video", "habeo"] };
-const adjectives = { first: ["bonus", "magnus", "parvus"], second: ["altus", "novus", "clarus"] };
+            totalQuestions = parseInt(document.getElementById("num-questions").value);
+            if (isNaN(totalQuestions) || totalQuestions < 0) {
+                alert("Please enter a valid number of questions.");
+                return;
+            }
 
+            questionCount = 0;
+            nextQuestion(enabledGroups);
+        }
 
-let questions = [];
-let currentIndex = 0;
+        function getEnabledGroups() {
+            const enabledGroups = [];
 
+            document.querySelectorAll(".group-checkbox").forEach(checkbox => {
+                if (checkbox.checked) {
+                    enabledGroups.push(checkbox.dataset.group);
+                }
+            });
 
-document.getElementById("start-btn").addEventListener("click", () => {
-const numQuestions = parseInt(document.getElementById("num-questions").value);
-questions = [];
-for (let i = 0; i < numQuestions; i++) {
-questions.push({
-prompt: `Sample question ${i+1}`,
-answer: "test"
-});
-}
-currentIndex = 0;
-showQuestion();
-document.getElementById("quiz-section").style.display = "block";
-});
+            return enabledGroups;
+        }
 
+        function generateQuestion(enabledGroups) {
+            const group = enabledGroups[Math.floor(Math.random() * enabledGroups.length)];
+            let word, prompt, correctAnswer;
 
-document.getElementById("submit-btn").addEventListener("click", () => {
-const userAnswer = document.getElementById("answer").value.trim();
-const correctAnswer = questions[currentIndex].answer;
-const feedback = document.getElementById("feedback");
-if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
-feedback.textContent = "Correct!";
-feedback.style.color = "green";
-} else {
-feedback.textContent = `Incorrect. Correct answer: ${correctAnswer}`;
-feedback.style.color = "red";
-}
-currentIndex++;
-if (currentIndex < questions.length) {
-setTimeout(showQuestion, 1000);
-} else {
-setTimeout(() => {
-document.getElementById("question").textContent = "Quiz finished!";
-document.getElementById("answer").style.display = "none";
-document.getElementById("submit-btn").style.display = "none";
-feedback.textContent = "Well done!";
-}, 1000);
-}
-});
+            if (group.startsWith("noun")) {
+                const declension = group.split("-")[1];
+                word = nouns[declension][Math.floor(Math.random() * nouns[declension].length)];
+                const cases = ["nominative", "genitive", "dative", "accusative", "ablative"];
+                const numbers = ["singular", "plural"];
+                const selectedCase = cases[Math.floor(Math.random() * cases.length)];
+                const selectedNumber = numbers[Math.floor(Math.random() * numbers.length)];
+                prompt = `'${word}' (n.) - ${selectedCase} ${selectedNumber}`;
+                correctAnswer = "(placeholder for noun answer)"; // Replace with actual logic
+            } else if (group.startsWith("verb")) {
+                const conjugation = group.split("-")[1];
+                word = verbs[conjugation][Math.floor(Math.random() * verbs[conjugation].length)];
+                const tenses = ["present", "imperfect", "future", "perfect", "pluperfect", "future perfect"];
+                const agent = ["ego", "tū", "is", "nōs", "vōs", "iī"];
+                const selectedTense = tenses[Math.floor(Math.random() * tenses.length)];
+                const selectedAgent = agent[Math.floor(Math.random() * agent.length)];
+                prompt = `'${word}' (v.) -  ${selectedAgent}, ${selectedTense}`;
+                correctAnswer = "(placeholder for verb answer)"; // Replace with actual logic
+            } else if (group.startsWith("adjective")) {
+                const declension = group.split("-")[1];
+                word = adjectives[declension][Math.floor(Math.random() * adjectives[declension].length)];
+                const cases = ["nominative", "genitive", "dative", "accusative", "ablative"];
+                const numbers = ["singular", "plural"];
+                const selectedCase = cases[Math.floor(Math.random() * cases.length)];
+                const selectedNumber = numbers[Math.floor(Math.random() * numbers.length)];
+                prompt = `'${word}' (adj.) - ${selectedCase} ${selectedNumber}`;
+                correctAnswer = "(placeholder for adjective answer)"; // Replace with actual logic
+            }
 
+            return { word, prompt, correctAnswer };
+        }
 
-function showQuestion() {
-document.getElementById("question").textContent = questions[currentIndex].prompt;
-document.getElementById("answer").value = "";
-document.getElementById("feedback").textContent = "";
-}
-</script>
+        function nextQuestion(enabledGroups) {
+            if (totalQuestions != 0 && questionCount >= totalQuestions) {
+                alert("Quiz complete! Great job!");
+                return;
+            }
+
+            currentQuestion = generateQuestion(enabledGroups);
+            document.getElementById("question-field").textContent = currentQuestion.prompt;
+            document.getElementById("answer-field").value = "";
+            questionCount++;
+        }
+
+        function verifyAnswer() {
+            const userAnswer = document.getElementById("answer-field").value.trim();
+
+            if (!currentQuestion) {
+                alert("Please start the quiz first.");
+                return;
+            }
+/*
+            if (userAnswer === currentQuestion.correctAnswer) {
+                alert("Correct!");
+            } else {
+                alert(`Incorrect. The correct answer was: ${currentQuestion.correctAnswer}`);
+            }
+*/
+            nextQuestion(getEnabledGroups());
+        }
+    </script>
+</head>
+<body>
+    <h1>Latin Conjugation Trainer</h1>
+
+    <div class="section">
+        <h2>Enable Groups</h2>
+        <div class="checkbox-group">
+            <label><input type="checkbox" class="group-checkbox" data-group="noun-first"> Noun - First Declension</label><br>
+            <label><input type="checkbox" class="group-checkbox" data-group="noun-second"> Noun - Second Declension</label><br>
+            <label><input type="checkbox" class="group-checkbox" data-group="noun-third"> Noun - Third Declension</label><br>
+            <label><input type="checkbox" class="group-checkbox" data-group="noun-fourth"> Noun - Fourth Declension</label><br>
+            <label><input type="checkbox" class="group-checkbox" data-group="noun-fifth"> Noun - Fifth Declension</label><br>
+            <label><input type="checkbox" class="group-checkbox" data-group="verb-first"> Verb - First Conjugation</label><br>
+            <label><input type="checkbox" class="group-checkbox" data-group="verb-second"> Verb - Second Conjugation</label><br>
+            <label><input type="checkbox" class="group-checkbox" data-group="verb-third"> Verb - Third Conjugation</label><br>
+            <label><input type="checkbox" class="group-checkbox" data-group="verb-fourth"> Verb - Fourth Conjugation</label><br>
+            <label><input type="checkbox" class="group-checkbox" data-group="verb-irregular"> Verb - Irregular</label><br>
+            <label><input type="checkbox" class="group-checkbox" data-group="adjective-first"> Adjective - First Group</label><br>
+            <label><input type="checkbox" class="group-checkbox" data-group="adjective-second"> Adjective - Second Group</label><br>
+            <label><input type="checkbox" class="group-checkbox" data-group="adjective-third"> Adjective - Third Group</label><br>
+        </div>
+    </div>
+
+    <div class="section">
+        <label for="num-questions">Number of Questions:</label>
+        <input type="number" id="num-questions" min="1" value="5">
+    </div>
+
+    <div class="section">
+        <button onclick="startQuiz()">Start Quiz</button>
+    </div>
+
+    <div class="section">
+        <div id="question-field">Press "Start Quiz" to generate a question.</div>
+        <input type="text" id="answer-field" placeholder="Enter your answer here">
+        <button onclick="verifyAnswer()">Submit Answer</button>
+    </div>
 </body>
 </html>
