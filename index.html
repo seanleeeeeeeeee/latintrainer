@@ -4,18 +4,68 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Latin Conjugation Trainer</title>
+    <!-- Import Roboto font -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Roboto', sans-serif;
             margin: 20px;
             text-align: center;
+            background-color: #f9f9fb;
+            color: #333;
+        }
+
+        h1 {
+            color: #2c3e50;
+        }
+
+        h2 {
+            color: #34495e;
         }
 
         .section {
-            margin: 20px 0;
+            margin: 20px auto;
+            padding: 15px;
+            max-width: 600px;
+            border: 2px solid #3498db;
+            border-radius: 10px;
+            background-color: #ffffff;
+            box-shadow: 0px 3px 6px rgba(0,0,0,0.1);
         }
+
         .checkbox-group {
             margin-left: 20px;
+            text-align: left;
+            display: inline-block;
+        }
+
+        input[type="number"], input[type="text"] {
+            padding: 8px;
+            border: 1px solid #bbb;
+            border-radius: 6px;
+            margin-top: 8px;
+            width: 60%;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            background-color: #3498db;
+            color: white;
+            font-size: 15px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        #question-field {
+            font-weight: bold;
+            margin: 10px 0;
+            color: #2c3e50;
         }
     </style>
     <script>
